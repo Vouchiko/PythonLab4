@@ -37,6 +37,9 @@ def create_DataFrame() -> pd.DataFrame:
 
     return df3
 
+def df_mark_filter(df: pd.DataFrame, class_mark: int) -> pd.DataFrame:
+    return df[df['mark'] == class_mark]
+
 
 if __name__ == '__main__':
     df = create_DataFrame()
