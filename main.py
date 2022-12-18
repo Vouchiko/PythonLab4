@@ -1,5 +1,8 @@
 import pandas as pd
 import cv2
+import matplotlib.pyplot as plt
+from typing import List
+import numpy as np
 
 def img_height(path: str) -> int:
     img = cv2.imread(path)
@@ -55,6 +58,31 @@ def df_pixel_statistics(df: pd.DataFrame, class_mark: int) -> pd.DataFrame:
     df = df_mark_filter(df, class_mark)
     df.groupby('pixel').count()
     print(df.pixel.describe())
+
+
+def create_histogram(df: pd.DataFrame, class_mark: int) -> List[np.ndarray]:
+    df = df_mark_filter(df, class_mark)
+    df = df.sample()
+    for item in df['Path']:
+        path = item
+    img = cv2.imread(path)
+    color = ('b', 'g', 'r')
+    result = [[], []]
+    for i, col in enumerate(color):
+        histr = cv2.calcHist([img], [i], None, [256], [0, 256])
+        result[0].append(histr)
+        result[1].append(col)
+    return result
+
+
+def draw_histrogram(df: pd.DataFrame, class_mark: int) -> None:
+    tmp = create_histogram(df, class_mark)
+    for i in range(len(tmp[0])):
+        plt.plot(tmp[0][i], color=tmp[1][i])
+        plt.xlim([0, 256])
+    plt.xlabel("Intensity")
+    plt.ylabel("Number of pixels")
+    plt.show()
 
 
 if __name__ == '__main__':
