@@ -1,4 +1,20 @@
 import pandas as pd
+import cv2
+
+def img_height(path: str) -> int:
+    img = cv2.imread(path)
+    return img.shape[0]
+
+
+def img_width(path: str) -> int:
+    img = cv2.imread(path)
+    return img.shape[1]
+
+
+def img_channels(path: str) -> int:
+    img = cv2.imread(path)
+    return img.shape[2]
+
 
 
 def create_DataFrame() -> pd.DataFrame:
@@ -14,6 +30,11 @@ def create_DataFrame() -> pd.DataFrame:
             data.append(0)
         elif i == 'polar bear':
             data.append(1)
+        df3['mark'] = data
+        df3['height'] = df3['Path'].apply(img_height)
+        df3['width'] = df3['Path'].apply(img_width)
+        df3['channels'] = df3['Path'].apply(img_channels)
+
     return df3
 
 
