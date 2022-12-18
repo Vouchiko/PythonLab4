@@ -16,6 +16,11 @@ def img_channels(path: str) -> int:
     return img.shape[2]
 
 
+def img_pixels(path: str) -> int:
+    img = cv2.imread(path)
+    return img.size
+
+
 
 def create_DataFrame() -> pd.DataFrame:
     df1 = pd.read_csv('Brown bear annotation', header=None)
@@ -43,6 +48,13 @@ def df_mark_filter(df: pd.DataFrame, class_mark: int) -> pd.DataFrame:
 
 def df_dimentions_filter(df: pd.DataFrame, m_Height: int, m_Weight: int, class_mark: int) -> pd.DataFrame:
     return df[(df.mark == class_mark) & (df.height <= m_Height) & (df.width <= m_Weight)]
+
+
+def df_pixel_statistics(df: pd.DataFrame, class_mark: int) -> pd.DataFrame:
+    df['pixel'] = df['Path'].apply(img_pixels)
+    df = df_mark_filter(df, class_mark)
+    df.groupby('pixel').count()
+    print(df.pixel.describe())
 
 
 if __name__ == '__main__':
