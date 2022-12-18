@@ -41,5 +41,9 @@ def df_mark_filter(df: pd.DataFrame, class_mark: int) -> pd.DataFrame:
     return df[df['mark'] == class_mark]
 
 
+def df_dimentions_filter(df: pd.DataFrame, m_Height: int, m_Weight: int, class_mark: int) -> pd.DataFrame:
+    return df[(df.mark == class_mark) & (df.height <= m_Height) & (df.width <= m_Weight)]
+
+
 if __name__ == '__main__':
     df = create_DataFrame()
